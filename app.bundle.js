@@ -290,11 +290,12 @@ function findOption(step, optionId) {
 }
 
 
-/* src/audio.js */
+/* src/cute-intro */
 function createMusicController({ button, label }) {
   const audio = new Audio("cute-intro.mp3");
+
   audio.loop = true;
-  audio.volume = 0.9;
+  audio.volume = 1.0;
   audio.preload = "auto";
 
   let active = false;
@@ -305,7 +306,6 @@ function createMusicController({ button, label }) {
 
   async function start() {
     try {
-      audio.currentTime = audio.currentTime || 0;
       await audio.play();
 
       active = true;
