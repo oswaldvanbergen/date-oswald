@@ -122,7 +122,7 @@ const CONFIG = {
     {
       id: "color",
       label: "04",
-      title: "Outfit color so I can match with you",
+      title: "Outfit color?",
       missing: "Choose a color first.",
       options: [
         {
