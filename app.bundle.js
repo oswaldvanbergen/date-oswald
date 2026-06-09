@@ -292,47 +292,12 @@ function findOption(step, optionId) {
 
 /* src/audio.js */
 function createMusicController({ button, label }) {
-  let ctx = null;
-  let master = null;
-  let delay = null;
-  let feedback = null;
-  let timer = null;
-  let step = 0;
+  const audio = new Audio("cute-intro.mp3");
+  audio.loop = true;
+  audio.volume = 0.9;
+  audio.preload = "auto";
+
   let active = false;
-
-  const tempo = 108;
-  const beatMs = (60 / tempo) * 1000;
-
-  /*
-    Original melody.
-    Vibe target: soft hometown RPG, morning walk, nostalgic handheld-console feeling.
-    Not copied from any existing game track.
-  */
-  const melody = [
-    ["G5", 1], ["B5", 1], ["D6", 1.5], [null, .5],
-    ["B5", .75], ["A5", .75], ["G5", 1.5], [null, 1],
-
-    ["E5", 1], ["G5", 1], ["A5", 1.5], [null, .5],
-    ["G5", .75], ["E5", .75], ["D5", 1.5], [null, 1],
-
-    ["C5", 1], ["E5", 1], ["G5", 1.5], [null, .5],
-    ["A5", .75], ["G5", .75], ["E5", 1.5], [null, 1],
-
-    ["D5", 1], ["G5", 1], ["B5", 1.5], [null, .5],
-    ["A5", .75], ["G5", .75], ["D5", 2], [null, 1]
-  ];
-
-  const bass = [
-    "G2", "G2", "D3", "D3",
-    "E3", "E3", "C3", "C3"
-  ];
-
-  const harmony = [
-    "B4", "D5", "G4", "B4",
-    "G4", "B4", "E4", "G4",
-    "E4", "G4", "C4", "E4",
-    "D4", "G4", "A4", "D5"
-  ];
 
   async function toggle() {
     active ? stop() : await start();
@@ -340,28 +305,12 @@ function createMusicController({ button, label }) {
 
   async function start() {
     try {
-      const Audio = window.AudioContext || window.webkitAudioContext;
-
-      if (!Audio) {
-        label.textContent = "music unsupported";
-        return;
-      }
-
-      ctx = ctx || new Audio();
-      setupAudioGraph();
-
-      if (ctx.state === "suspended") {
-        await ctx.resume();
-      }
+      audio.currentTime = audio.currentTime || 0;
+      await audio.play();
 
       active = true;
-      step = 0;
       button.setAttribute("aria-pressed", "true");
       label.textContent = "music on";
-
-      // Small unlock chirp so mobile users know audio is alive.
-      playTone("G5", 0.10, "triangle", 0.22, 900);
-      window.setTimeout(schedule, 120);
     } catch {
       active = false;
       button.setAttribute("aria-pressed", "false");
@@ -370,139 +319,13 @@ function createMusicController({ button, label }) {
   }
 
   function stop() {
+    audio.pause();
     active = false;
-    clearTimeout(timer);
     button.setAttribute("aria-pressed", "false");
     label.textContent = "music off";
   }
 
-  function setupAudioGraph() {
-    if (master) return;
-
-    master = ctx.createGain();
-    master.gain.value = 0.58;
-
-    delay = ctx.createDelay();
-    delay.delayTime.value = 0.18;
-
-    feedback = ctx.createGain();
-    feedback.gain.value = 0.18;
-
-    delay.connect(feedback);
-    feedback.connect(delay);
-
-    delay.connect(master);
-    master.connect(ctx.destination);
-  }
-
-  function schedule() {
-    if (!active || !ctx) return;
-
-    const [note, beats] = melody[step % melody.length];
-    const bassNote = bass[Math.floor(step / 2) % bass.length];
-    const harmonyNote = harmony[step % harmony.length];
-
-    if (note) {
-      // Lead: soft triangle, nostalgic handheld style.
-      playTone(note, beats * 0.34, "triangle", 0.20, 1300);
-
-      // Bell layer one octave up, very quiet.
-      playTone(transpose(note, 12), beats * 0.22, "sine", 0.045, 1800, true);
-    }
-
-    if (step % 2 === 0) {
-      // Bass: warm, not too loud.
-      playTone(bassNote, 0.46, "sine", 0.13, 650);
-    }
-
-    if (step % 4 === 0) {
-      // Gentle chord sparkle.
-      playTone(harmonyNote, 0.24, "triangle", 0.06, 1100, true);
-      playTone(transpose(harmonyNote, 7), 0.24, "triangle", 0.045, 1100, true);
-    }
-
-    step += 1;
-    timer = setTimeout(schedule, beats * beatMs);
-  }
-
-  function playTone(note, length, type, volume, cutoff = 1200, sendToDelay = false) {
-    if (!ctx || !master || !note) return;
-
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
-
-    osc.type = type;
-    osc.frequency.value = frequency(note);
-
-    filter.type = "lowpass";
-    filter.frequency.value = cutoff;
-    filter.Q.value = 0.55;
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(volume, now + 0.018);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + length);
-
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(master);
-
-    if (sendToDelay && delay) {
-      gain.connect(delay);
-    }
-
-    osc.start(now);
-    osc.stop(now + length + 0.04);
-  }
-
   return { toggle, start, stop };
-}
-
-function frequency(note) {
-  const semitones = {
-    C: -9,
-    "C#": -8,
-    D: -7,
-    "D#": -6,
-    E: -5,
-    F: -4,
-    "F#": -3,
-    G: -2,
-    "G#": -1,
-    A: 0,
-    "A#": 1,
-    B: 2
-  };
-
-  const match = note.match(/^([A-G]#?)(\d)$/);
-
-  if (!match) {
-    return 440;
-  }
-
-  const [, pitch, octave] = match;
-
-  return 440 * Math.pow(2, (semitones[pitch] + (Number(octave) - 4) * 12) / 12);
-}
-
-function transpose(note, steps) {
-  const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  const match = note.match(/^([A-G]#?)(\d)$/);
-
-  if (!match) {
-    return note;
-  }
-
-  const [, pitch, octaveRaw] = match;
-  const octave = Number(octaveRaw);
-  const index = names.indexOf(pitch);
-  const next = index + steps;
-
-  const nextPitch = names[((next % 12) + 12) % 12];
-  const nextOctave = octave + Math.floor(next / 12);
-
-  return `${nextPitch}${nextOctave}`;
 }
 /* src/app.js */
 let finalSnapshot = null;
