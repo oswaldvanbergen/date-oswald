@@ -39,7 +39,7 @@ const CONFIG = {
           slot: "4pm",
           title: "Học Viện Phép Thuật",
           emoji: "🪄",
-          meta: "IDECAF · 4:00 PM",
+          meta: "IDECAF · 4:00 - 7:30",
           gradient: "linear-gradient(135deg, #ffe074, #ff9ccc, #5ab8ff)"
         },
         {
@@ -47,7 +47,7 @@ const CONFIG = {
           slot: "4pm",
           title: "Hồn ma cô đào hát",
           emoji: "🎭",
-          meta: "Sân khấu thế giới trẻ · 4:00 PM",
+          meta: "Sân khấu thế giới trẻ · 4:00 - 7:00",
           gradient: "linear-gradient(135deg, #ffd99a, #ff7a68, #7465f2)"
         },
         {
@@ -55,7 +55,7 @@ const CONFIG = {
           slot: "730pm",
           title: "Lộ Hàng",
           emoji: "📱",
-          meta: "Thiên Đăng · 7:30 PM",
+          meta: "Thiên Đăng · 7:30 - 10:30",
           gradient: "linear-gradient(135deg, #dff6ff, #5ab8ff, #ffe074)"
         },
         {
@@ -63,7 +63,7 @@ const CONFIG = {
           slot: "730pm",
           title: "Già Gân",
           emoji: "🏘️",
-          meta: "Hồng Vân · 7:30 PM",
+          meta: "Hồng Vân · 7:30 - 10:00",
           gradient: "linear-gradient(135deg, #fff0c7, #ff9f7a, #ff86ba)"
         },
         {
@@ -71,7 +71,7 @@ const CONFIG = {
           slot: "any",
           title: "You suggest",
           emoji: "💬",
-          meta: "I’m all ears",
+          meta: "If you want to do a different activity, let me know!",
           gradient: "linear-gradient(135deg, #ffffff, #d9f2ff, #ffd4eb)"
         }
       ]
@@ -86,7 +86,7 @@ const CONFIG = {
           id: "italian",
           title: "Italian",
           emoji: "🍝",
-          meta: "Pasta / pizza / lasagna",
+          meta: "pasta / pizza / lasagna",
           gradient: "linear-gradient(135deg, #fff2a0, #ffb26f, #ff86ba)"
         },
         {
@@ -100,7 +100,7 @@ const CONFIG = {
           id: "japanese",
           title: "Japanese",
           emoji: "🍣",
-          meta: "Sushi / ramen / udon",
+          meta: "sushi / ramen / udon",
           gradient: "linear-gradient(135deg, #c9ffd9, #5ab8ff, #ff9ccc)"
         },
         {
@@ -122,7 +122,7 @@ const CONFIG = {
     {
       id: "color",
       label: "04",
-      title: "Outfit color? -> so I can match with you",
+      title: "Outfit color so I can match with you",
       missing: "Choose a color first.",
       options: [
         {
@@ -171,7 +171,7 @@ const CONFIG = {
           id: "surprise",
           title: "Surprise",
           emoji: "🎁",
-          note: "classified",
+          
           gradient: "linear-gradient(135deg, #ff86ba, #7465f2, #80d66b)"
         }
       ]
