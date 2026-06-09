@@ -69,9 +69,9 @@ Most changes should happen there. You can change:
 ```text
 datequest/
 ├─ assets/
-│  ├─ retro-galactic-hero.svg
-│  ├─ vintage-cowboy-doll.svg
-│  └─ silly-spud-toy.svg
+│  ├─ retro-galactic-hero.jpg
+│  ├─ vintage-cowboy-doll.jpg
+│  └─ silly-spud-toy.jpg
 ├─ src/
 │  ├─ app.js
 │  ├─ audio.js
