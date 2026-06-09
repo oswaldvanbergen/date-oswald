@@ -245,26 +245,26 @@ function renderPoster(config, sourceState) {
     <div class="poster-hero poster-hero-new">
       <div class="poster-rainbow" aria-hidden="true"></div>
 
-      <img class="poster-main-big" src="assets/main2.jpg" alt="">
+      <img class="poster-main-big" src="main2.jpg" alt="">
 
-      <img class="poster-main2-float main2-one" src="assets/main.jpg" alt="">
-      <img class="poster-main2-float main2-two" src="assets/main.jpg" alt="">
-      <img class="poster-main2-float main2-three" src="assets/main.jpg" alt="">
+      <img class="poster-main2-float main2-one" src="main.jpg" alt="">
+      <img class="poster-main2-float main2-two" src="main.jpg" alt="">
+      <img class="poster-main2-float main2-three" src="main.jpg" alt="">
 
-      <img class="poster-main-float float-one" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-two" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-three" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-four" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-five" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-six" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-seven" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-eight" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-nine" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-ten" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-eleven" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-twelve" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-thirteen" src="assets/main.jpg" alt="">
-      <img class="poster-main-float float-fourteen" src="assets/main.jpg" alt="">
+      <img class="poster-main-float float-one" src="main.jpg" alt="">
+      <img class="poster-main-float float-two" src="main.jpg" alt="">
+      <img class="poster-main-float float-three" src="main.jpg" alt="">
+      <img class="poster-main-float float-four" src="main.jpg" alt="">
+      <img class="poster-main-float float-five" src="main.jpg" alt="">
+      <img class="poster-main-float float-six" src="main.jpg" alt="">
+      <img class="poster-main-float float-seven" src="main.jpg" alt="">
+      <img class="poster-main-float float-eight" src="main.jpg" alt="">
+      <img class="poster-main-float float-nine" src="main.jpg" alt="">
+      <img class="poster-main-float float-ten" src="main.jpg" alt="">
+      <img class="poster-main-float float-eleven" src="main.jpg" alt="">
+      <img class="poster-main-float float-twelve" src="main.jpg" alt="">
+      <img class="poster-main-float float-thirteen" src="main.jpg" alt="">
+      <img class="poster-main-float float-fourteen" src="main.jpg" alt="">
     </div>
 
     <div class="poster-card">
