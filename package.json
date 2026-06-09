@@ -1,0 +1,21 @@
+{
+  "name": "datequest",
+  "version": "1.0.0",
+  "description": "A tiny open-source date invitation builder with calm animated-toy storytelling.",
+  "type": "module",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "serve": "python -m http.server 8080",
+    "validate": "node scripts/validate-config.mjs"
+  },
+  "keywords": [
+    "date",
+    "invitation",
+    "static-site",
+    "pwa",
+    "vanilla-js",
+    "toybox",
+    "open-source"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "DateQuest",
+  "short_name": "DateQuest",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#bfe9ff",
+  "theme_color": "#7fbfff",
+  "icons": []
+}
