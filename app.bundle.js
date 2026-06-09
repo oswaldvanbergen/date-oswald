@@ -169,7 +169,7 @@ const CONFIG = {
         },
         {
           id: "surprise",
-          title: "Surprise me",
+          title: "Surprise",
           emoji: "🎁",
           note: "classified",
           gradient: "linear-gradient(135deg, #ff86ba, #7465f2, #80d66b)"
