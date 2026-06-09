@@ -280,7 +280,7 @@ function renderPoster(config, sourceState) {
     </div>
 
     <div class="poster-footer">
-      Thanks for choosing. I’m happy you got to pick the plan.
+      Thank you for choosing. I’m happy you got to pick the plan.
     </div>
   `;
 }
