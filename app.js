@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { createMusicController } from "./audio.js";
+import { createMusicController } from "./cute-intro.mp3";
 import { readState, writeState, clearState } from "./storage.js";
 import { renderPoster } from "./poster.js";
 import { escapeHtml } from "./utils.js";
