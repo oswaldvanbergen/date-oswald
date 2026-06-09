@@ -280,7 +280,7 @@ function renderPoster(config, sourceState) {
     </div>
 
     <div class="poster-footer">
-      Thank you for choosing. I’m happy you got to pick the plan.
+      Thank you for choosing. I’m happy with what you picked.
     </div>
   `;
 }
@@ -353,7 +353,6 @@ const els = {
   planTitle: document.querySelector("#plan-title"),
   poster: document.querySelector("#poster"),
   copy: document.querySelector("#copy"),
-  share: document.querySelector("#share"),
   restart: document.querySelector("#restart"),
   toast: document.querySelector("#toast"),
   musicToggle: document.querySelector("#music-toggle"),
@@ -369,7 +368,6 @@ els.start.addEventListener("click", start);
 els.back.addEventListener("click", back);
 els.next.addEventListener("click", next);
 els.copy.addEventListener("click", copyPlan);
-els.share.addEventListener("click", sharePlan);
 els.restart.addEventListener("click", restart);
 els.musicToggle.addEventListener("click", music.toggle);
 
@@ -542,18 +540,7 @@ async function copyPlan() {
   }
 }
 
-async function sharePlan() {
-  const text = planText();
 
-  if (navigator.share) {
-    try {
-      await navigator.share({ title: CONFIG.appName, text });
-      return;
-    } catch {}
-  }
-
-  await copyPlan();
-}
 
 function restart() {
   clearState(CONFIG);
@@ -587,9 +574,7 @@ function planText() {
     `${CONFIG.appName}`,
     CONFIG.event.date,
     "",
-    ...lines,
-    "",
-    "Thank you for choosing. I will handle the plan."
+    ...lines
   ].join("\n");
 }
 
