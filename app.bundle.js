@@ -341,6 +341,7 @@ const els = {
   intro: document.querySelector("#intro"),
   planner: document.querySelector("#planner"),
   final: document.querySelector("#final"),
+  loading: document.querySelector("#loading"),
   start: document.querySelector("#start"),
   stepKicker: document.querySelector("#step-kicker"),
   stepTitle: document.querySelector("#step-title"),
