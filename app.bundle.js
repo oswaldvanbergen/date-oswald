@@ -52,7 +52,7 @@ const CONFIG = {
         },
         {
           id: "bong-dan",
-          slot: "800pm",
+          slot: "730pm",
           title: "Bóng đàn ông",
           emoji: "🫂",
           meta: "Sân khấu thế giới trẻ · 8:00 - 11:00",
