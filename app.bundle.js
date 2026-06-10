@@ -51,11 +51,11 @@ const CONFIG = {
           gradient: "linear-gradient(135deg, #ffd99a, #ff7a68, #7465f2)"
         },
         {
-          id: "lo-hang",
-          slot: "730pm",
-          title: "Lộ Hàng",
-          emoji: "📱",
-          meta: "Thiên Đăng · 7:30 - 10:30",
+          id: "bong-dan",
+          slot: "800pm",
+          title: "Bóng đàn ông",
+          emoji: "🫂",
+          meta: "Sân khấu thế giới trẻ · 8:00 - 11:00",
           gradient: "linear-gradient(135deg, #dff6ff, #5ab8ff, #ffe074)"
         },
         {
