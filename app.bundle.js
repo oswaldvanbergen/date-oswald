@@ -220,7 +220,7 @@ function clearState(config) {
 }
 
 function key(config) {
-  return `${config.appName}:state:v1`;
+  return `${config.appName}:state:v2`;
 }
 
 
