@@ -571,8 +571,7 @@ function planText() {
   });
 
   return [
-    `${CONFIG.appName}`,
-    CONFIG.event.date,
+    `${CONFIG.event.date}`,
     "",
     ...lines
   ].join("\n");
