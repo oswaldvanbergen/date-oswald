@@ -220,7 +220,7 @@ function clearState(config) {
 }
 
 function key(config) {
-  return `${config.appName}:state:v1`;
+  return `${config.appName}:state:v3`;
 }
 
 
@@ -263,8 +263,6 @@ function renderPoster(config, sourceState) {
       <img class="poster-main-float float-ten" src="main.jpg" alt="">
       <img class="poster-main-float float-eleven" src="main.jpg" alt="">
       <img class="poster-main-float float-twelve" src="main.jpg" alt="">
-      <img class="poster-main-float float-thirteen" src="main.jpg" alt="">
-      <img class="poster-main-float float-fourteen" src="main.jpg" alt="">
     </div>
 
     <div class="poster-card">
@@ -279,9 +277,15 @@ function renderPoster(config, sourceState) {
       </div>
     </div>
 
-    <div class="poster-footer">
-      Thank you for choosing. I’m happy with what you picked.
-    </div>
+    ${sourceState.selections.color === "surprise" ? `
+  <div class="poster-alert">
+    🔥 URGENT: classified outfit protocol activated. Proceed with caution.
+  </div>
+` : ""}
+
+<div class="poster-footer">
+  Selection received. I will handle the logistics.
+</div>
   `;
 }
 
@@ -375,9 +379,13 @@ els.musicToggle.addEventListener("click", music.toggle);
 render();
 
 function start() {
-  switchScreen(els.intro, els.planner);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  render();
+  switchScreen(els.intro, els.loading);
+
+  window.setTimeout(() => {
+    switchScreen(els.loading, els.planner);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    render();
+  }, 900);
 }
 
 function render() {
