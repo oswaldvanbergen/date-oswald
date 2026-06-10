@@ -169,7 +169,7 @@ const CONFIG = {
         },
         {
           id: "surprise",
-          title: "Em muốn anh mặc gì để hợp nè",
+          title: "có màu nào mà e muốn a mặc khum",
           emoji: "🎁",
           
           gradient: "linear-gradient(135deg, #ff86ba, #7465f2, #80d66b)"
