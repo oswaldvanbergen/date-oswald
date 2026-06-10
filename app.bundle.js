@@ -136,7 +136,7 @@ const CONFIG = {
           id: "blue",
           title: "Blue",
           emoji: "💙",
-          note: "blue sky",
+          note: "like your eyes",
           gradient: "linear-gradient(135deg, #d9f2ff, #5ab8ff, #7465f2)"
         },
         {
@@ -162,9 +162,9 @@ const CONFIG = {
         },
         {
           id: "purple",
-          title: "Purple",
+          title: "Purple?",
           emoji: "💜",
-          note: "JOHN CENAAAA",
+          note: "JOHN CENAAAAAAAAAAAAAAAAAAAAAAAAA",
           gradient: "linear-gradient(135deg, #e6d7ff, #9b6bff, #ff86ba)"
         },
         {
