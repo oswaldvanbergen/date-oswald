@@ -247,10 +247,8 @@ function renderPoster(config, sourceState) {
 
       <img class="poster-main-big" src="main2.jpg" alt="">
 
-      <img class="poster-main2-float main2-one" src="main.jpg" alt="">
-      <img class="poster-main2-float main2-two" src="main.jpg" alt="">
-      <img class="poster-main2-float main2-three" src="main.jpg" alt="">
-
+    
+  
       <img class="poster-main-float float-one" src="main.jpg" alt="">
       <img class="poster-main-float float-two" src="main.jpg" alt="">
       <img class="poster-main-float float-three" src="main.jpg" alt="">
@@ -260,9 +258,7 @@ function renderPoster(config, sourceState) {
       <img class="poster-main-float float-seven" src="main.jpg" alt="">
       <img class="poster-main-float float-eight" src="main.jpg" alt="">
       <img class="poster-main-float float-nine" src="main.jpg" alt="">
-      <img class="poster-main-float float-ten" src="main.jpg" alt="">
-      <img class="poster-main-float float-eleven" src="main.jpg" alt="">
-      <img class="poster-main-float float-twelve" src="main.jpg" alt="">
+      
     </div>
 
     <div class="poster-card">
