@@ -69,9 +69,9 @@ const CONFIG = {
         {
           id: "her-suggestion",
           slot: "any",
-          title: "You suggest",
+          title: "Others",
           emoji: "💬",
-          meta: "If you want to do a different activity, let me know!",
+          meta: "If you want to do something else, I'm all ears",
           gradient: "linear-gradient(135deg, #ffffff, #d9f2ff, #ffd4eb)"
         }
       ]
@@ -112,7 +112,7 @@ const CONFIG = {
         },
         {
           id: "her-food-pick",
-          title: "Others — you suggest",
+          title: "Others",
           emoji: "💬",
           meta: "I’m all ears",
           gradient: "linear-gradient(135deg, #ffffff, #d9f2ff, #ffd4eb)"
@@ -122,7 +122,7 @@ const CONFIG = {
     {
       id: "color",
       label: "04",
-      title: "Outfit color?",
+      title: "Outfit color so I can match with you",
       missing: "Choose a color first.",
       options: [
         {
@@ -169,7 +169,7 @@ const CONFIG = {
         },
         {
           id: "surprise",
-          title: "Surprise",
+          title: "Em muốn anh mặc gì để hợp nè",
           emoji: "🎁",
           
           gradient: "linear-gradient(135deg, #ff86ba, #7465f2, #80d66b)"
