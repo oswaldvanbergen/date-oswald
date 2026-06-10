@@ -51,7 +51,7 @@ const CONFIG = {
           gradient: "linear-gradient(135deg, #ffd99a, #ff7a68, #7465f2)"
         },
         {
-          id: "bong-dan",
+          id: "bong-dan-ong",
           slot: "730pm",
           title: "Bóng đàn ông",
           emoji: "🫂",
@@ -220,7 +220,7 @@ function clearState(config) {
 }
 
 function key(config) {
-  return `${config.appName}:state:v2`;
+  return `${config.appName}:state:v1`;
 }
 
 
