@@ -82,12 +82,27 @@
 
         <div class="final-actions">
             <button id="copy" class="primary-action" type="button">Copy plan</button>
-            <button id="restart" class="secondary-action" type="button">Restart</button>
+            <button id="restart" class="secondary-action" type="button">Start over</button>
         </div>
         
         <p id="toast" class="toast hidden" role="status"></p>
       </div>
     </section>
+        </section>
+
+    <section id="loading" class="loading-screen hidden" aria-live="polite">
+      <div class="loading-card">
+        <p class="kicker">DateQuest</p>
+        <h2>Preparing route<span class="loading-dots" aria-hidden="true"></span></h2>
+        <p>checking playtimes, food probability, and outfit protocol</p>
+      </div>
+    </section>
+  </main>
+
+  <script defer src="app.bundle.js"></script>
+</body>
+</html>
+    
   </main>
 
   <script defer src="app.bundle.js"></script>
