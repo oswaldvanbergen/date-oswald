@@ -699,7 +699,7 @@ function setupSecretPasswordGate() {
       <div class="secret-unlocked">
         <span>SECRET OPTION UNLOCKED</span>
         <strong>The instructor and creator of this manual.</strong>
-        <p>Live demonstration available by appointment.</p>
+        <p>Live demo available.</p>
       </div>
     `;
   };
