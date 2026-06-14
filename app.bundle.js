@@ -181,19 +181,18 @@ const CONFIG = {
 
 const MS_VI_CODE = "28022005";
 const HUNG_CODE = "12121999";
-
 const PRIVATE_TOYS = [
   {
     id: "rose",
     title: "Bông hồng",
     image: "rose.jpg",
-    subtitle: "warm-up 4.5/5",
+    subtitle: "warm-up",
     rules: [
-      "Bắt đầu ở mức thấp nhất, để cơ thể tự làm quen trước.",
-      "Từ từ và quan sát phản ứng của em.",
-      "Không cần lube nhưng từ từ và chậm rãi."
+      "Bài này mở màn nên nhẹ thôi. Không cần sâu, không cần vội, cứ để em quen dần đã.",
+      "A sẽ nhìn phản ứng của em hơn là nhìn cái toy. Khá là lạ nên cứ điều chỉnh cho thích hợp -> này gu nhẹ nhàng",
+      "Cái này không cần lube, nhưng cần kiên nhẫn."
     ],
-    note: "Ghi chú: nhẹ tay vừa đủ, không vội vàng. Mục tiêu là làm em relaxed."
+    note: "bông hồng thì không được hấp tấp, đặc biệt là bông hồng như em."
   },
   {
     id: "mini-massager",
@@ -201,11 +200,11 @@ const PRIVATE_TOYS = [
     image: "mini-massager.jpg",
     subtitle: "a wild discovery",
     rules: [
-      "Nếu em nhạy cảm, thử qua lớp quần lót trước.",
-      "Giữ lực nhẹ, để cảm giác tăng dần thay vì ập tới.",
-      "Đặt đúng vị trí mà em muốn và nhẹ nhàng di chuyển dần."
+      "Nếu em nhạy cảm thì thử qua lớp vải trước.",
+      "Nhẹ trước. Đúng chỗ trước. Rồi tính tiếp. Không phải cứ mạnh là hay đâu ha.",
+      "Có nhiều nhịp em học nà, chậm dần, nhanh dần, samba hay dubstep đủ kiểu để nhảy."
     ],
-    note: "Ghi chú: nhỏ nhưng có võ. Phải cần đúng nhịp."
+    note: "nhỏ nhưng có võ."
   },
   {
     id: "dildo",
@@ -213,12 +212,12 @@ const PRIVATE_TOYS = [
     image: "dildo.jpg",
     subtitle: "right shape right size",
     rules: [
-      "Bắt đầu chậm và luôn có lube.",
-      "Không vội, thử cảm nhận trước.",
-      "Cẩn thận vì có thể làm em trầy xước nếu quá hardcore.",
-      "Nếu có đau, rát, khó chịu, hoặc em không chắc thì phải dừng lại."
+    
+      "Chậm thôi. Lube vừa đủ. Cơ thể em quyết định tốc độ.",
+      "Nếu đau, rát, khó chịu, hoặc sai sai — dừng.",
+      "Mục tiêu không phải là hardcore. Mục tiêu là em vẫn thấy an toàn và để a trêutiếp."
     ],
-    note: "Ghi chú: team effort nên cần dừng thì dừng ngay."
+    note: "team effort. e thoải mái thì a mới được lên lớp."
   },
   {
     id: "plug",
@@ -226,14 +225,15 @@ const PRIVATE_TOYS = [
     image: "plug.jpg",
     subtitle: "advanced",
     rules: [
-      "Chỉ dùng loại có đế chốt an toàn.",
-      "Vệ sinh trước vùng sau và dùng lube rất nhiều nha em.",
-      "Có thể kết hợp với các toy khác.",
-      "Không làm nếu chưa thật sự thoải mái."
+      "Vệ sinh cửa sau sạch. Chỉ dùng loại có đế chặn an toàn. Không có đế là loại khỏi chương trình.",
+      "Lube nhiều lắm nha. Chậm hơn bình thường. Và không có chuyện cố thêm một chút.",
+      "Có thể dùng với toy, nhưng chỉ khi em ham học quá."
     ],
-    note: "Ghi chú: bài cửa sau là bài nâng cao. Không rush, không ego."
+    note: "bài tập chuyên sinh của em"
   }
 ];
+
+
 
 let finalSnapshot = null;
 
@@ -597,7 +597,7 @@ function setupManualPasswordGate() {
 
 function renderManualContent() {
   return `
-    <section id="manual-panel" class="manual-panel manual-open" aria-label="Hung's private giáo án">
+    <section id="manual-panel" class="manual-panel manual-open" aria-label="giáo án cho Vi">
       <div class="manual-stamp">HUNG'S PRIVATE GIÁO ÁN</div>
 
       <div class="toy-grid">
@@ -618,7 +618,7 @@ function renderManualContent() {
 
       <div class="toy-instruction" id="toy-instruction">
         <strong>Choose a file.</strong>
-        <p>Logistics will appear here.</p>
+        <p>Instructions will appear here.</p>
       </div>
     </section>
   `;
