@@ -200,7 +200,7 @@ const PRIVATE_TOYS = [
     image: "mini-massager.jpg",
     subtitle: "a wild discovery",
     rules: [
-      "Nếu em nhạy cảm thì thử qua lớp vải trước.",
+      "Nếu em nhạy cảm thì thử qua lớp quần lót trước.",
       "Nhẹ trước. Đúng chỗ trước. Rồi tính tiếp. Không phải cứ mạnh là hay đâu ha.",
       "Có nhiều nhịp em học nà, chậm dần, nhanh dần, samba hay dubstep đủ kiểu để nhảy."
     ],
