@@ -1,4 +1,5 @@
-/* src/config.js */
+/* app.bundle.js */
+
 const CONFIG = {
   appName: "DateQuest",
   event: {
@@ -178,7 +179,115 @@ const CONFIG = {
   ]
 };
 
-/* src/utils.js */
+const MS_VI_CODE = "28022005";
+const HUNG_CODE = "12121999";
+
+const PRIVATE_TOYS = [
+  {
+    id: "rose",
+    title: "Bông hồng",
+    image: "rose.jpg",
+    subtitle: "warm-up 4.5/5",
+    rules: [
+      "Bắt đầu ở mức thấp nhất, để cơ thể tự làm quen trước.",
+      "Từ từ và quan sát phản ứng của em.",
+      "Không cần lube nhưng từ từ và chậm rãi."
+    ],
+    note: "Ghi chú: nhẹ tay vừa đủ, không vội vàng. Mục tiêu là làm em relaxed."
+  },
+  {
+    id: "mini-massager",
+    title: "Mini Massager",
+    image: "mini-massager.jpg",
+    subtitle: "a wild discovery",
+    rules: [
+      "Nếu em nhạy cảm, thử qua lớp quần lót trước.",
+      "Giữ lực nhẹ, để cảm giác tăng dần thay vì ập tới.",
+      "Đặt đúng vị trí mà em muốn và nhẹ nhàng di chuyển dần."
+    ],
+    note: "Ghi chú: nhỏ nhưng có võ. Phải cần đúng nhịp."
+  },
+  {
+    id: "dildo",
+    title: "Soft Silicone Dildo",
+    image: "dildo.jpg",
+    subtitle: "right shape right size",
+    rules: [
+      "Bắt đầu chậm và luôn có lube.",
+      "Không vội, thử cảm nhận trước.",
+      "Cẩn thận vì có thể làm em trầy xước nếu quá hardcore.",
+      "Nếu có đau, rát, khó chịu, hoặc em không chắc thì phải dừng lại."
+    ],
+    note: "Ghi chú: team effort nên cần dừng thì dừng ngay."
+  },
+  {
+    id: "plug",
+    title: "Beginner Plug",
+    image: "plug.jpg",
+    subtitle: "advanced",
+    rules: [
+      "Chỉ dùng loại có đế chốt an toàn.",
+      "Vệ sinh trước vùng sau và dùng lube rất nhiều nha em.",
+      "Có thể kết hợp với các toy khác.",
+      "Không làm nếu chưa thật sự thoải mái."
+    ],
+    note: "Ghi chú: bài cửa sau là bài nâng cao. Không rush, không ego."
+  }
+];
+
+let finalSnapshot = null;
+
+const state = readState(CONFIG) ?? {
+  stepIndex: 0,
+  selections: freshSelections()
+};
+
+normalizeState(state);
+
+const els = {
+  intro: document.querySelector("#intro"),
+  planner: document.querySelector("#planner"),
+  final: document.querySelector("#final"),
+  loading: document.querySelector("#loading"),
+
+  start: document.querySelector("#start"),
+  back: document.querySelector("#back"),
+  next: document.querySelector("#next"),
+
+  stepKicker: document.querySelector("#step-kicker"),
+  stepTitle: document.querySelector("#step-title"),
+  stepCount: document.querySelector("#step-count"),
+  progress: document.querySelector("#progress"),
+  options: document.querySelector("#options"),
+
+  miniPlan: document.querySelector("#mini-plan"),
+  planTitle: document.querySelector("#plan-title"),
+
+  poster: document.querySelector("#poster"),
+  copy: document.querySelector("#copy"),
+  manual: document.querySelector("#manual"),
+  restart: document.querySelector("#restart"),
+  toast: document.querySelector("#toast"),
+
+  musicToggle: document.querySelector("#music-toggle"),
+  musicLabel: document.querySelector("#music-label")
+};
+
+const music = createMusicController({
+  button: els.musicToggle,
+  label: els.musicLabel
+});
+
+els.start?.addEventListener("click", start);
+els.back?.addEventListener("click", back);
+els.next?.addEventListener("click", next);
+els.copy?.addEventListener("click", copyPlan);
+els.manual?.addEventListener("click", openManualGate);
+els.restart?.addEventListener("click", restart);
+els.musicToggle?.addEventListener("click", music.toggle);
+
+render();
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -188,7 +297,6 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-/* src/storage.js */
 function readState(config) {
   try {
     const raw = localStorage.getItem(key(config));
@@ -204,9 +312,9 @@ function readState(config) {
   }
 }
 
-function writeState(config, state) {
+function writeState(config, sourceState) {
   try {
-    localStorage.setItem(key(config), JSON.stringify(state));
+    localStorage.setItem(key(config), JSON.stringify(sourceState));
   } catch {}
 }
 
@@ -217,10 +325,169 @@ function clearState(config) {
 }
 
 function key(config) {
-  return `${config.appName}:state:v4`;
+  return `${config.appName}:state:v5`;
 }
 
-/* src/poster.js */
+function start() {
+  removeManualPanel();
+  els.manual?.classList.add("hidden");
+
+  switchScreen(els.intro, els.loading);
+
+  window.setTimeout(() => {
+    switchScreen(els.loading, els.planner);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    render();
+  }, 900);
+}
+
+function render() {
+  normalizeState(state);
+
+  const step = currentStep();
+
+  els.stepKicker.textContent = step.label;
+  els.stepTitle.textContent = step.title;
+  els.stepCount.textContent = `${state.stepIndex + 1} / ${CONFIG.steps.length}`;
+  els.progress.style.width = `${((state.stepIndex + 1) / CONFIG.steps.length) * 100}%`;
+  els.back.disabled = state.stepIndex === 0;
+  els.next.textContent = state.stepIndex === CONFIG.steps.length - 1 ? "Finish" : "Next";
+
+  renderOptions(step);
+  renderMiniPlan();
+  writeState(CONFIG, state);
+}
+
+function renderOptions(step) {
+  els.options.className = `options ${step.grid ?? ""}`.trim();
+
+  els.options.innerHTML = visibleOptions(step).map((option) => {
+    const selected = state.selections[step.id] === option.id;
+
+    const classes = [
+      "option-card",
+      selected ? "is-selected" : "",
+      option.recommended ? "is-recommended" : ""
+    ].filter(Boolean).join(" ");
+
+    return `
+      <button class="${classes}" type="button" data-option="${escapeHtml(option.id)}" style="--option-gradient: ${escapeHtml(option.gradient)}" aria-pressed="${selected}">
+        <div class="option-art" aria-hidden="true">${option.emoji}</div>
+        <div class="option-body">
+          <h3>${escapeHtml(option.title)}</h3>
+          ${option.meta ? `<p>${escapeHtml(option.meta)}</p>` : ""}
+          ${option.note ? `<div class="option-note">${escapeHtml(option.note)}</div>` : ""}
+        </div>
+      </button>
+    `;
+  }).join("");
+
+  els.options.querySelectorAll("[data-option]").forEach((button) => {
+    button.addEventListener("click", () => select(step.id, button.dataset.option));
+  });
+}
+
+function renderMiniPlan() {
+  const labels = {
+    time: "Time",
+    play: "Play",
+    food: "Food",
+    color: "Outfit"
+  };
+
+  const rows = CONFIG.steps.map((step) => {
+    const option = selectedOption(step.id);
+    const detail = option?.note || option?.meta || "";
+
+    return `
+      <div class="mini-row">
+        <span>${escapeHtml(labels[step.id] ?? step.id)}</span>
+        <strong>${option ? `${option.emoji} ${escapeHtml(option.title)}${detail ? ` · ${escapeHtml(detail)}` : ""}` : "Pending"}</strong>
+      </div>
+    `;
+  });
+
+  const count = CONFIG.steps.filter((step) => selectedOption(step.id)).length;
+
+  els.planTitle.textContent = count === 0 ? "Still choosing" : `${count} selected`;
+  els.miniPlan.innerHTML = rows.join("");
+}
+
+function select(stepId, optionId) {
+  state.selections[stepId] = optionId;
+
+  if (stepId === "time") {
+    clearPlayIfTimeChanged(optionId);
+  }
+
+  render();
+  pulseSelected();
+}
+
+function clearPlayIfTimeChanged(selectedTime) {
+  const playStep = CONFIG.steps.find((step) => step.id === "play");
+  const selectedPlay = playStep?.options.find((option) => option.id === state.selections.play);
+
+  if (!selectedPlay) return;
+
+  const mismatch =
+    selectedPlay.slot !== "any" &&
+    selectedPlay.slot !== selectedTime;
+
+  if (mismatch) {
+    state.selections.play = null;
+  }
+}
+
+function back() {
+  if (state.stepIndex === 0) return;
+
+  state.stepIndex -= 1;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  render();
+}
+
+function next() {
+  const step = currentStep();
+
+  if (!state.selections[step.id]) {
+    showToast(step.missing ?? "Choose an option first.");
+
+    els.options.animate([
+      { transform: "translateX(0)" },
+      { transform: "translateX(-6px)" },
+      { transform: "translateX(6px)" },
+      { transform: "translateX(0)" }
+    ], { duration: 220, easing: "ease-in-out" });
+
+    return;
+  }
+
+  if (state.stepIndex < CONFIG.steps.length - 1) {
+    state.stepIndex += 1;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    render();
+    return;
+  }
+
+  showFinal();
+}
+
+function showFinal() {
+  finalSnapshot = cloneState(state);
+
+  els.poster.innerHTML = renderPoster(CONFIG, finalSnapshot);
+
+  clearState(CONFIG);
+  resetWorkingState();
+  removeManualPanel();
+
+  els.manual?.classList.toggle("hidden", !isManualUnlocked(finalSnapshot));
+
+  switchScreen(els.planner, els.final);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function renderPoster(config, sourceState) {
   const labels = {
     time: "Time",
@@ -275,75 +542,6 @@ function renderPoster(config, sourceState) {
       Selection received. I will handle the logistics.
     </div>
   `;
-}
-
-function findOption(step, optionId) {
-  return step.options.find((option) => option.id === optionId);
-}
-
-/* src/manual.js */
-const MS_VI_CODE = "28022005";
-const HUNG_CODE = "12121999";
-
-const PRIVATE_TOYS = [
-  {
-    id: "rose",
-    title: "Bông hồng",
-    image: "rose.jpg",
-    subtitle: "warm-up 4.5/5",
-    rules: [
-      "Bắt đầu ở mức thấp nhất, để cơ thể tự làm quen trước.",
-      "Từ từ và quan sát phản ứng của em.",
-      "không cần lube nhưng từ từ và chậm rãi"
-    ],
-    note: "Ghi chú: nhẹ tay vừa đủ, không vội vàng. mục tiêu là làm em relaxed."
-  },
-  {
-    id: "mini-massager",
-    title: "Mini Massager",
-    image: "mini-massager.jpg",
-    subtitle: "a wild discovery",
-    rules: [
-      "Nếu em nhạy cảm, thử qua lớp quần lót trước.",
-      "Giữ lực nhẹ, để cảm giác tăng dần thay vì ập tới.",
-      "Đặt đúng vị trí mà em muốn và nhẹ nhàng di chuyển dần"
-    ],
-    note: "Ghi chú: nhỏ nhưng có võ. phải cần đúng nhịp."
-  },
-  {
-    id: "dildo",
-    title: "Soft Silicone Dildo",
-    image: "dildo.jpg",
-    subtitle: "right shape right size",
-    rules: [
-  
-      "Bắt đầu chậm và luôn có lube.",
-      "không vội, thử cảm nhận -> cẩn thận vì có thể làm em trày xước nếu quá hardcore",
-      "Nếu có đau, rát, khó chịu, hoặc em không chắc phải dừng lại."
-    ],
-    note: "Ghi chú: team effort nên cần dừng thì dừng ngay."
-  },
-  {
-    id: "plug",
-    title: "Beginner Plug",
-    image: "plug.jpg",
-    subtitle: "advanced",
-    rules: [
-      "Chỉ dùng loại có đế chốt an toàn.",
-      "Vệ sinh trước vùng sau và dùng lube rất nhiều nha em.",
-      "Có thể kết hợp với các toy khác."
-    ],
-    note: "Ghi chú: bài cửa sau là bài nâng cao. không làm nếu em chưa thật sự thoải mái."
-  }
-];
-
-
-function isManualUnlocked(sourceState) {
-  return (
-    sourceState?.selections?.time === "730pm" &&
-    sourceState?.selections?.play === "bong-dan-ong" &&
-    sourceState?.selections?.food === "japanese"
-  );
 }
 
 function openManualGate() {
@@ -514,262 +712,6 @@ function setupSecretPasswordGate() {
   window.setTimeout(() => input.focus(), 80);
 }
 
-function removeManualPanel() {
-  document.querySelector("#manual-panel")?.remove();
-}
-
-/* src/cute-intro.js */
-function createMusicController({ button, label }) {
-  const audio = new Audio("cute-intro.mp3");
-
-  audio.loop = true;
-  audio.volume = 1.0;
-  audio.preload = "auto";
-
-  let active = false;
-
-  async function toggle() {
-    active ? stop() : await start();
-  }
-
-  async function start() {
-    try {
-      await audio.play();
-
-      active = true;
-      button.setAttribute("aria-pressed", "true");
-      label.textContent = "music on";
-    } catch {
-      active = false;
-      button.setAttribute("aria-pressed", "false");
-      label.textContent = "tap again";
-    }
-  }
-
-  function stop() {
-    audio.pause();
-    active = false;
-    button.setAttribute("aria-pressed", "false");
-    label.textContent = "music off";
-  }
-
-  return { toggle, start, stop };
-}
-
-/* src/app.js */
-let finalSnapshot = null;
-
-const state = readState(CONFIG) ?? {
-  stepIndex: 0,
-  selections: freshSelections()
-};
-
-normalizeState(state);
-
-const els = {
-  intro: document.querySelector("#intro"),
-  planner: document.querySelector("#planner"),
-  final: document.querySelector("#final"),
-  loading: document.querySelector("#loading"),
-
-  start: document.querySelector("#start"),
-  back: document.querySelector("#back"),
-  next: document.querySelector("#next"),
-
-  stepKicker: document.querySelector("#step-kicker"),
-  stepTitle: document.querySelector("#step-title"),
-  stepCount: document.querySelector("#step-count"),
-  progress: document.querySelector("#progress"),
-  options: document.querySelector("#options"),
-
-  miniPlan: document.querySelector("#mini-plan"),
-  planTitle: document.querySelector("#plan-title"),
-
-  poster: document.querySelector("#poster"),
-  copy: document.querySelector("#copy"),
-  manual: document.querySelector("#manual"),
-  restart: document.querySelector("#restart"),
-  toast: document.querySelector("#toast"),
-
-  musicToggle: document.querySelector("#music-toggle"),
-  musicLabel: document.querySelector("#music-label")
-};
-
-const music = createMusicController({
-  button: els.musicToggle,
-  label: els.musicLabel
-});
-
-els.start?.addEventListener("click", start);
-els.back?.addEventListener("click", back);
-els.next?.addEventListener("click", next);
-els.copy?.addEventListener("click", copyPlan);
-els.manual?.addEventListener("click", openManualGate);
-els.restart?.addEventListener("click", restart);
-els.musicToggle?.addEventListener("click", music.toggle);
-
-render();
-
-function start() {
-  removeManualPanel();
-  els.manual?.classList.add("hidden");
-
-  switchScreen(els.intro, els.loading);
-
-  window.setTimeout(() => {
-    switchScreen(els.loading, els.planner);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    render();
-  }, 900);
-}
-
-function render() {
-  normalizeState(state);
-
-  const step = currentStep();
-
-  els.stepKicker.textContent = step.label;
-  els.stepTitle.textContent = step.title;
-  els.stepCount.textContent = `${state.stepIndex + 1} / ${CONFIG.steps.length}`;
-  els.progress.style.width = `${((state.stepIndex + 1) / CONFIG.steps.length) * 100}%`;
-  els.back.disabled = state.stepIndex === 0;
-  els.next.textContent = state.stepIndex === CONFIG.steps.length - 1 ? "Finish" : "Next";
-
-  renderOptions(step);
-  renderMiniPlan();
-  writeState(CONFIG, state);
-}
-
-function renderOptions(step) {
-  els.options.className = `options ${step.grid ?? ""}`.trim();
-
-  els.options.innerHTML = visibleOptions(step).map((option) => {
-    const selected = state.selections[step.id] === option.id;
-
-    const classes = [
-      "option-card",
-      selected ? "is-selected" : "",
-      option.recommended ? "is-recommended" : ""
-    ].filter(Boolean).join(" ");
-
-    return `
-      <button class="${classes}" type="button" data-option="${escapeHtml(option.id)}" style="--option-gradient: ${escapeHtml(option.gradient)}" aria-pressed="${selected}">
-        <div class="option-art" aria-hidden="true">${option.emoji}</div>
-        <div class="option-body">
-          <h3>${escapeHtml(option.title)}</h3>
-          ${option.meta ? `<p>${escapeHtml(option.meta)}</p>` : ""}
-          ${option.note ? `<div class="option-note">${escapeHtml(option.note)}</div>` : ""}
-        </div>
-      </button>
-    `;
-  }).join("");
-
-  els.options.querySelectorAll("[data-option]").forEach((button) => {
-    button.addEventListener("click", () => select(step.id, button.dataset.option));
-  });
-}
-
-function renderMiniPlan() {
-  const labels = {
-    time: "Time",
-    play: "Play",
-    food: "Food",
-    color: "Outfit"
-  };
-
-  const rows = CONFIG.steps.map((step) => {
-    const option = selectedOption(step.id);
-    const detail = option?.note || option?.meta || "";
-
-    return `
-      <div class="mini-row">
-        <span>${escapeHtml(labels[step.id] ?? step.id)}</span>
-        <strong>${option ? `${option.emoji} ${escapeHtml(option.title)}${detail ? ` · ${escapeHtml(detail)}` : ""}` : "Pending"}</strong>
-      </div>
-    `;
-  });
-
-  const count = CONFIG.steps.filter((step) => selectedOption(step.id)).length;
-
-  els.planTitle.textContent = count === 0 ? "Still choosing" : `${count} selected`;
-  els.miniPlan.innerHTML = rows.join("");
-}
-
-function select(stepId, optionId) {
-  state.selections[stepId] = optionId;
-
-  if (stepId === "time") {
-    clearPlayIfTimeChanged(optionId);
-  }
-
-  render();
-  pulseSelected();
-}
-
-function clearPlayIfTimeChanged(selectedTime) {
-  const playStep = CONFIG.steps.find((step) => step.id === "play");
-  const selectedPlay = playStep?.options.find((option) => option.id === state.selections.play);
-
-  if (!selectedPlay) return;
-
-  const mismatch =
-    selectedPlay.slot !== "any" &&
-    selectedPlay.slot !== selectedTime;
-
-  if (mismatch) {
-    state.selections.play = null;
-  }
-}
-
-function back() {
-  if (state.stepIndex === 0) return;
-
-  state.stepIndex -= 1;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  render();
-}
-
-function next() {
-  const step = currentStep();
-
-  if (!state.selections[step.id]) {
-    showToast(step.missing ?? "Choose an option first.");
-
-    els.options.animate([
-      { transform: "translateX(0)" },
-      { transform: "translateX(-6px)" },
-      { transform: "translateX(6px)" },
-      { transform: "translateX(0)" }
-    ], { duration: 220, easing: "ease-in-out" });
-
-    return;
-  }
-
-  if (state.stepIndex < CONFIG.steps.length - 1) {
-    state.stepIndex += 1;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    render();
-    return;
-  }
-
-  showFinal();
-}
-
-function showFinal() {
-  finalSnapshot = cloneState(state);
-
-  els.poster.innerHTML = renderPoster(CONFIG, finalSnapshot);
-
-  clearState(CONFIG);
-  resetWorkingState();
-  removeManualPanel();
-
-  els.manual?.classList.toggle("hidden", !isManualUnlocked(finalSnapshot));
-
-  switchScreen(els.planner, els.final);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
 async function copyPlan() {
   const text = planText();
 
@@ -840,6 +782,10 @@ function selectedOptionFromState(sourceState, stepId) {
   return step?.options.find((option) => option.id === id) ?? null;
 }
 
+function findOption(step, optionId) {
+  return step.options.find((option) => option.id === optionId);
+}
+
 function visibleOptions(step) {
   if (step.id !== "play") return step.options;
 
@@ -882,6 +828,18 @@ function normalizeState(sourceState) {
   if (play && play.slot !== "any" && play.slot !== time) {
     sourceState.selections.play = null;
   }
+}
+
+function isManualUnlocked(sourceState) {
+  return (
+    sourceState?.selections?.time === "730pm" &&
+    sourceState?.selections?.play === "bong-dan-ong" &&
+    sourceState?.selections?.food === "japanese"
+  );
+}
+
+function removeManualPanel() {
+  document.querySelector("#manual-panel")?.remove();
 }
 
 function showToast(message) {
@@ -936,4 +894,41 @@ function fallbackCopy(text) {
   area.select();
   document.execCommand("copy");
   area.remove();
+}
+
+function createMusicController({ button, label }) {
+  const audio = new Audio("cute-intro.mp3");
+
+  audio.loop = true;
+  audio.volume = 1.0;
+  audio.preload = "auto";
+
+  let active = false;
+
+  async function toggle() {
+    active ? stop() : await start();
+  }
+
+  async function start() {
+    try {
+      await audio.play();
+
+      active = true;
+      button.setAttribute("aria-pressed", "true");
+      label.textContent = "music on";
+    } catch {
+      active = false;
+      button.setAttribute("aria-pressed", "false");
+      label.textContent = "tap again";
+    }
+  }
+
+  function stop() {
+    audio.pause();
+    active = false;
+    button.setAttribute("aria-pressed", "false");
+    label.textContent = "music off";
+  }
+
+  return { toggle, start, stop };
 }
