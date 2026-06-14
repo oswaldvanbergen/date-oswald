@@ -171,14 +171,12 @@ const CONFIG = {
           id: "surprise",
           title: "có màu nào mà e muốn a mặc khum",
           emoji: "🎁",
-          
           gradient: "linear-gradient(135deg, #ff86ba, #7465f2, #80d66b)"
         }
       ]
     }
   ]
 };
-
 
 /* src/utils.js */
 function escapeHtml(value) {
@@ -189,7 +187,6 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
 
 /* src/storage.js */
 function readState(config) {
@@ -220,9 +217,8 @@ function clearState(config) {
 }
 
 function key(config) {
-  return `${config.appName}:state:v3`;
+  return `${config.appName}:state:v4`;
 }
-
 
 /* src/poster.js */
 function renderPoster(config, sourceState) {
@@ -247,8 +243,6 @@ function renderPoster(config, sourceState) {
 
       <img class="poster-main-big" src="main2.jpg" alt="">
 
-    
-  
       <img class="poster-main-float float-one" src="main.jpg" alt="">
       <img class="poster-main-float float-two" src="main.jpg" alt="">
       <img class="poster-main-float float-three" src="main.jpg" alt="">
@@ -257,8 +251,6 @@ function renderPoster(config, sourceState) {
       <img class="poster-main-float float-six" src="main.jpg" alt="">
       <img class="poster-main-float float-seven" src="main.jpg" alt="">
       <img class="poster-main-float float-eight" src="main.jpg" alt="">
-      <img class="poster-main-float float-nine" src="main.jpg" alt="">
-      
     </div>
 
     <div class="poster-card">
@@ -274,14 +266,14 @@ function renderPoster(config, sourceState) {
     </div>
 
     ${sourceState.selections.color === "surprise" ? `
-  <div class="poster-alert">
-    🔥 URGENT: classified outfit protocol activated. Proceed with caution.
-  </div>
-` : ""}
+      <div class="poster-alert">
+        🔥 URGENT: classified outfit protocol activated. Proceed with caution.
+      </div>
+    ` : ""}
 
-<div class="poster-footer">
-  Selection received. I will handle the logistics.
-</div>
+    <div class="poster-footer">
+      Selection received. I will handle the logistics.
+    </div>
   `;
 }
 
@@ -289,8 +281,244 @@ function findOption(step, optionId) {
   return step.options.find((option) => option.id === optionId);
 }
 
+/* src/manual.js */
+const MS_VI_CODE = "28022005";
+const HUNG_CODE = "12121999";
 
-/* src/cute-intro */
+const PRIVATE_TOYS = [
+  {
+    id: "rose",
+    title: "Rose Protocol",
+    image: "toys/rose.jpg",
+    subtitle: "external warm-up",
+    rules: [
+      "Start low.",
+      "Ask, don’t assume.",
+      "Pause means pause."
+    ],
+    note: "Operator note: gentle confidence, no speedrun."
+  },
+  {
+    id: "mini-massager",
+    title: "Mini Massager",
+    image: "toys/mini-massager.jpg",
+    subtitle: "gentle exploration",
+    rules: [
+      "Try over fabric first if shy.",
+      "Keep pressure light.",
+      "Upgrade only if requested."
+    ],
+    note: "Operator note: small tool, serious logistics."
+  },
+  {
+    id: "dildo",
+    title: "Soft Silicone Dildo",
+    image: "toys/dildo.jpg",
+    subtitle: "explicitly chosen only",
+    rules: [
+      "Small first.",
+      "Slow always.",
+      "Lube mandatory.",
+      "Stop if there is discomfort."
+    ],
+    note: "Operator note: consent is the unlock code."
+  },
+  {
+    id: "plug",
+    title: "Beginner Plug",
+    image: "toys/plug.jpg",
+    subtitle: "advanced curiosity file",
+    rules: [
+      "Flared base only.",
+      "Lots of lube.",
+      "No rushing.",
+      "No pain."
+    ],
+    note: "Operator note: advanced logistics require common sense."
+  }
+];
+
+function isManualUnlocked(sourceState) {
+  return (
+    sourceState?.selections?.time === "730pm" &&
+    sourceState?.selections?.play === "bong-dan-ong" &&
+    sourceState?.selections?.food === "japanese"
+  );
+}
+
+function openManualGate() {
+  if (!isManualUnlocked(finalSnapshot)) return;
+
+  removeManualPanel();
+
+  els.toast.insertAdjacentHTML("beforebegin", `
+    <section id="manual-panel" class="manual-panel manual-locked" aria-label="Private section">
+      <div class="manual-password-row">
+        <input id="manual-password" type="password" inputmode="numeric" autocomplete="off" placeholder="password">
+        <button id="manual-unlock" class="primary-action" type="button">Unlock</button>
+      </div>
+    </section>
+  `);
+
+  setupManualPasswordGate();
+}
+
+function setupManualPasswordGate() {
+  const input = document.querySelector("#manual-password");
+  const unlock = document.querySelector("#manual-unlock");
+  const panel = document.querySelector("#manual-panel");
+
+  if (!input || !unlock || !panel) return;
+
+  const attemptUnlock = () => {
+    if (input.value.trim() !== MS_VI_CODE) {
+      input.classList.add("is-error");
+
+      panel.animate([
+        { transform: "translateX(0)" },
+        { transform: "translateX(-6px)" },
+        { transform: "translateX(6px)" },
+        { transform: "translateX(0)" }
+      ], { duration: 220, easing: "ease-in-out" });
+
+      window.setTimeout(() => input.classList.remove("is-error"), 500);
+      return;
+    }
+
+    panel.outerHTML = renderManualContent();
+    setupToyManual();
+  };
+
+  unlock.addEventListener("click", attemptUnlock);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") attemptUnlock();
+  });
+
+  window.setTimeout(() => input.focus(), 80);
+}
+
+function renderManualContent() {
+  return `
+    <section id="manual-panel" class="manual-panel manual-open" aria-label="Hung's private giáo án">
+      <div class="manual-stamp">HUNG'S PRIVATE GIÁO ÁN</div>
+
+      <div class="toy-grid">
+        ${PRIVATE_TOYS.map((toy) => `
+          <button class="toy-card" type="button" data-toy="${escapeHtml(toy.id)}">
+            <img src="${escapeHtml(toy.image)}" alt="">
+            <strong>${escapeHtml(toy.title)}</strong>
+            <span>${escapeHtml(toy.subtitle)}</span>
+          </button>
+        `).join("")}
+
+        <button class="toy-card toy-card-secret" type="button" data-secret-option="true">
+          <div class="secret-tile">?</div>
+          <strong>Secret option</strong>
+          <span>classified</span>
+        </button>
+      </div>
+
+      <div class="toy-instruction" id="toy-instruction">
+        <strong>Choose a file.</strong>
+        <p>Logistics will appear here.</p>
+      </div>
+    </section>
+  `;
+}
+
+function setupToyManual() {
+  const output = document.querySelector("#toy-instruction");
+  if (!output) return;
+
+  document.querySelectorAll("[data-toy]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const toy = PRIVATE_TOYS.find((item) => item.id === button.dataset.toy);
+      if (!toy) return;
+
+      document.querySelectorAll(".toy-card").forEach((item) => {
+        item.classList.toggle("is-selected", item === button);
+      });
+
+      output.innerHTML = `
+        <div class="toy-detail-head">
+          <img src="${escapeHtml(toy.image)}" alt="">
+          <div>
+            <strong>${escapeHtml(toy.title)}</strong>
+            <span>${escapeHtml(toy.subtitle)}</span>
+          </div>
+        </div>
+
+        <ul>
+          ${toy.rules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+        </ul>
+
+        <p>${escapeHtml(toy.note)}</p>
+      `;
+    });
+  });
+
+  const secret = document.querySelector("[data-secret-option]");
+
+  secret?.addEventListener("click", () => {
+    document.querySelectorAll(".toy-card").forEach((item) => {
+      item.classList.toggle("is-selected", item === secret);
+    });
+
+    output.innerHTML = `
+      <div class="manual-password-row">
+        <input id="secret-password" type="password" inputmode="numeric" autocomplete="off" placeholder="password">
+        <button id="secret-unlock" class="primary-action" type="button">Unlock</button>
+      </div>
+    `;
+
+    setupSecretPasswordGate();
+  });
+}
+
+function setupSecretPasswordGate() {
+  const input = document.querySelector("#secret-password");
+  const unlock = document.querySelector("#secret-unlock");
+  const output = document.querySelector("#toy-instruction");
+
+  if (!input || !unlock || !output) return;
+
+  const attemptUnlock = () => {
+    if (input.value.trim() !== HUNG_CODE) {
+      input.classList.add("is-error");
+
+      output.animate([
+        { transform: "translateX(0)" },
+        { transform: "translateX(-6px)" },
+        { transform: "translateX(6px)" },
+        { transform: "translateX(0)" }
+      ], { duration: 220, easing: "ease-in-out" });
+
+      window.setTimeout(() => input.classList.remove("is-error"), 500);
+      return;
+    }
+
+    output.innerHTML = `
+      <div class="secret-unlocked">
+        <span>SECRET OPTION UNLOCKED</span>
+        <strong>The instructor and creator of this manual.</strong>
+        <p>Live demonstration available by appointment.</p>
+      </div>
+    `;
+  };
+
+  unlock.addEventListener("click", attemptUnlock);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") attemptUnlock();
+  });
+
+  window.setTimeout(() => input.focus(), 80);
+}
+
+function removeManualPanel() {
+  document.querySelector("#manual-panel")?.remove();
+}
+
+/* src/cute-intro.js */
 function createMusicController({ button, label }) {
   const audio = new Audio("cute-intro.mp3");
 
@@ -327,6 +555,7 @@ function createMusicController({ button, label }) {
 
   return { toggle, start, stop };
 }
+
 /* src/app.js */
 let finalSnapshot = null;
 
@@ -342,20 +571,26 @@ const els = {
   planner: document.querySelector("#planner"),
   final: document.querySelector("#final"),
   loading: document.querySelector("#loading"),
+
   start: document.querySelector("#start"),
+  back: document.querySelector("#back"),
+  next: document.querySelector("#next"),
+
   stepKicker: document.querySelector("#step-kicker"),
   stepTitle: document.querySelector("#step-title"),
   stepCount: document.querySelector("#step-count"),
   progress: document.querySelector("#progress"),
   options: document.querySelector("#options"),
-  back: document.querySelector("#back"),
-  next: document.querySelector("#next"),
+
   miniPlan: document.querySelector("#mini-plan"),
   planTitle: document.querySelector("#plan-title"),
+
   poster: document.querySelector("#poster"),
   copy: document.querySelector("#copy"),
+  manual: document.querySelector("#manual"),
   restart: document.querySelector("#restart"),
   toast: document.querySelector("#toast"),
+
   musicToggle: document.querySelector("#music-toggle"),
   musicLabel: document.querySelector("#music-label")
 };
@@ -365,16 +600,20 @@ const music = createMusicController({
   label: els.musicLabel
 });
 
-els.start.addEventListener("click", start);
-els.back.addEventListener("click", back);
-els.next.addEventListener("click", next);
-els.copy.addEventListener("click", copyPlan);
-els.restart.addEventListener("click", restart);
-els.musicToggle.addEventListener("click", music.toggle);
+els.start?.addEventListener("click", start);
+els.back?.addEventListener("click", back);
+els.next?.addEventListener("click", next);
+els.copy?.addEventListener("click", copyPlan);
+els.manual?.addEventListener("click", openManualGate);
+els.restart?.addEventListener("click", restart);
+els.musicToggle?.addEventListener("click", music.toggle);
 
 render();
 
 function start() {
+  removeManualPanel();
+  els.manual?.classList.add("hidden");
+
   switchScreen(els.intro, els.loading);
 
   window.setTimeout(() => {
@@ -523,6 +762,9 @@ function showFinal() {
 
   clearState(CONFIG);
   resetWorkingState();
+  removeManualPanel();
+
+  els.manual?.classList.toggle("hidden", !isManualUnlocked(finalSnapshot));
 
   switchScreen(els.planner, els.final);
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -545,14 +787,15 @@ async function copyPlan() {
   }
 }
 
-
-
 function restart() {
   clearState(CONFIG);
   finalSnapshot = null;
   resetWorkingState();
+  removeManualPanel();
 
-  els.toast.classList.add("hidden");
+  els.manual?.classList.add("hidden");
+  els.toast?.classList.add("hidden");
+
   switchScreen(els.final, els.intro);
   render();
 }
