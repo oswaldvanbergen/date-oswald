@@ -1025,4 +1025,231 @@ transition-duration: .001ms !important;
   font-weight: 900;
   text-align: center;
 }
+/* LOWKEY PRIVATE MANUAL */
 
+.manual-panel {
+  margin: 14px auto 0;
+  width: min(720px, calc(100% - 28px));
+  position: relative;
+  z-index: 8;
+  padding: 16px;
+  border-radius: 26px;
+  text-align: left;
+  background: rgba(255,255,255,.78);
+  border: 1px solid rgba(255,255,255,.84);
+  box-shadow: 0 14px 30px rgba(23,33,53,.10);
+  backdrop-filter: blur(12px);
+}
+
+.manual-locked {
+  width: min(520px, calc(100% - 28px));
+}
+
+.manual-password-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.manual-password-row input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(23,33,53,.14);
+  background: rgba(255,255,255,.76);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 850;
+}
+
+.manual-password-row input.is-error {
+  outline: 4px solid rgba(255, 122, 104, .25);
+}
+
+.manual-stamp {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #8a260f;
+  background: rgba(255, 224, 116, .62);
+  border: 1px solid rgba(255,255,255,.78);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .12em;
+}
+
+.toy-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.toy-card {
+  min-height: 172px;
+  padding: 10px;
+  border: 1px solid rgba(23,33,53,.10);
+  border-radius: 22px;
+  background: rgba(255,255,255,.66);
+  color: var(--ink);
+  cursor: pointer;
+  text-align: center;
+  transition: transform .18s ease, box-shadow .18s ease, outline .18s ease;
+}
+
+.toy-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(23,33,53,.10);
+}
+
+.toy-card.is-selected {
+  outline: 4px solid rgba(36,85,198,.20);
+}
+
+.toy-card img,
+.secret-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 9px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  object-fit: cover;
+  background: linear-gradient(135deg, rgba(255,255,255,.84), rgba(255, 224, 116, .42));
+  font-size: 42px;
+  font-weight: 950;
+  color: #134e97;
+}
+
+.toy-card strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+.toy-card span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.toy-card-secret {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,224,116,.34), transparent 28%),
+    linear-gradient(135deg, rgba(255,255,255,.70), rgba(255,232,242,.70));
+}
+
+.toy-instruction {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 20px;
+  color: #2b1720;
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(23,33,53,.10);
+}
+
+.toy-detail-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.toy-detail-head img {
+  width: 74px;
+  height: 74px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.toy-detail-head strong {
+  display: block;
+  color: #134e97;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.toy-detail-head span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.toy-instruction ul {
+  margin: 0 0 10px 18px;
+  padding: 0;
+}
+
+.toy-instruction li {
+  margin: 5px 0;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.toy-instruction p {
+  margin: 0;
+  color: rgba(43, 23, 32, .72);
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 750;
+}
+
+.secret-unlocked {
+  text-align: center;
+  padding: 8px;
+}
+
+.secret-unlocked span {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #7a2100;
+  background: rgba(255,224,116,.72);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .12em;
+}
+
+.secret-unlocked strong {
+  display: block;
+  color: #134e97;
+  font-size: clamp(24px, 6vw, 40px);
+  line-height: .95;
+  letter-spacing: -.04em;
+}
+
+.secret-unlocked p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 850;
+}
+
+@media (max-width: 620px) {
+  .manual-panel,
+  .manual-locked {
+    width: min(100%, calc(100% - 12px));
+    padding: 13px;
+    border-radius: 22px;
+  }
+
+  .manual-password-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toy-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toy-card {
+    min-height: 158px;
+  }
+}
