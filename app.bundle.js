@@ -288,55 +288,56 @@ const HUNG_CODE = "12121999";
 const PRIVATE_TOYS = [
   {
     id: "rose",
-    title: "Rose Protocol",
-    image: "toys/rose.jpg",
-    subtitle: "external warm-up",
+    title: "Bóng hồng như em",
+    image: "rose.jpg",
+    subtitle: "khởi động nhẹ nhàng",
     rules: [
-      "Start low.",
-      "Ask, don’t assume.",
-      "Pause means pause."
+      "Bắt đầu ở mức thấp nhất, để cơ thể tự làm quen trước.",
+      "Đi chậm, quan sát phản ứng của em, không đoán mò.",
+      "Nếu em nói dừng, chậm lại, hoặc chỉ hơi ngập ngừng — dừng ngay."
     ],
-    note: "Operator note: gentle confidence, no speedrun."
+    note: "Ghi chú của instructor: nhẹ tay, tự tin vừa đủ, không vội vàng. Mục tiêu là làm em thấy an toàn trước khi thấy tò mò."
   },
   {
     id: "mini-massager",
     title: "Mini Massager",
-    image: "toys/mini-massager.jpg",
-    subtitle: "gentle exploration",
+    image: "mini-massager.jpg",
+    subtitle: "một cuộc khám phá nhỏ",
     rules: [
-      "Try over fabric first if shy.",
-      "Keep pressure light.",
-      "Upgrade only if requested."
+      "Nếu em còn ngại, thử qua lớp vải trước.",
+      "Giữ lực nhẹ, để cảm giác tăng dần thay vì ập tới.",
+      "Chỉ nâng cấp khi em muốn — không tự ý chuyển bài."
     ],
-    note: "Operator note: small tool, serious logistics."
+    note: "Ghi chú của instructor: nhỏ nhưng không xem thường. Mọi thứ hay nhất đều cần đúng nhịp."
   },
   {
     id: "dildo",
     title: "Soft Silicone Dildo",
-    image: "toys/dildo.jpg",
-    subtitle: "explicitly chosen only",
+    image: "dildo.jpg",
+    subtitle: "đúng dáng, đúng lúc",
     rules: [
-      "Small first.",
-      "Slow always.",
-      "Lube mandatory.",
-      "Stop if there is discomfort."
+      "Chỉ dùng khi em thật sự chọn bài này.",
+      "Bắt đầu nhỏ, chậm, và luôn có lube.",
+      "Không ép, không vội, không biến tò mò thành áp lực.",
+      "Nếu có đau, rát, khó chịu, hoặc em không chắc — dừng lại."
     ],
-    note: "Operator note: consent is the unlock code."
+    note: "Ghi chú của instructor: consent là mật khẩu mở bài. Không có consent thì không có giáo án."
   },
   {
     id: "plug",
     title: "Beginner Plug",
-    image: "toys/plug.jpg",
-    subtitle: "advanced curiosity file",
+    image: "plug.jpg",
+    subtitle: "advanced file",
     rules: [
-      "Flared base only.",
-      "Lots of lube.",
-      "No rushing.",
-      "No pain."
+      "Chỉ dùng loại có đế chặn an toàn.",
+      "Lube nhiều hơn em nghĩ là đủ.",
+      "Đi rất chậm, không đau, không cố.",
+      "Không chuyển vùng nếu chưa vệ sinh kỹ."
     ],
-    note: "Operator note: advanced logistics require common sense."
+    note: "Ghi chú: bài cửa sau là bài nâng cao. Không rush, không ego, không làm nếu em chưa thật sự thoải mái."
   }
 ];
+
 
 function isManualUnlocked(sourceState) {
   return (
